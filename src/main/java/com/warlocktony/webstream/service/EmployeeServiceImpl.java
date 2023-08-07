@@ -4,6 +4,7 @@ import com.warlocktony.webstream.datatransferobject.Employee;
 import com.warlocktony.webstream.exception.EmployeeAlreadyAddedException;
 import com.warlocktony.webstream.exception.EmployeeNotFoundException;
 import com.warlocktony.webstream.exception.EmployeeStorageIsFullException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 
@@ -27,7 +28,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         if(employeeMap.size()==EMPLOYEE_MAX_SIZE){
             throw new EmployeeStorageIsFullException("staff limit is over");
         }
-        Employee employee = new Employee(firstName,lastName,salary,department );
+        Employee employee = new Employee(
+                StringUtils.capitalize(firstName),
+                StringUtils.capitalize(lastName),
+                salary,
+                department );
         String key = (firstName + lastName);
         if(employeeMap.containsKey(key)){
             throw new EmployeeAlreadyAddedException("this staff already added");
