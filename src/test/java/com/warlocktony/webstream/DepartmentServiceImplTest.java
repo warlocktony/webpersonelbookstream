@@ -1,0 +1,104 @@
+package com.warlocktony.webstream;
+
+import com.warlocktony.webstream.datatransferobject.Employee;
+import com.warlocktony.webstream.exception.EmployeeNotFoundException;
+import com.warlocktony.webstream.service.DepartmentServiceImpl;
+import com.warlocktony.webstream.service.EmployeeService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+@ExtendWith(MockitoExtension.class)
+ class DepartmentServiceImplTest {
+
+    @Mock
+    EmployeeService employeeService;
+
+    @InjectMocks
+    DepartmentServiceImpl underTest;
+
+    Employee employee1 = new Employee("ANTON", "ANTONOV",
+            100_000, 1);
+    Employee employee2 = new Employee("IVAN", "IVANOV",
+            90_000, 1);
+    Employee employee3 = new Employee("IRA", "IRINOVNA",
+            80_000, 2);
+    Collection<Employee> employees;
+
+    @BeforeEach
+    void beforeEach() {
+        employees = List.of(employee1, employee2, employee3);
+    }
+
+    @Test
+    void findMaxSalaryOfStaff_employeeFind_returnEmployeeVsMaxSalary() {
+        when(employeeService.findAll()).thenReturn(employees);
+
+        Employee result = underTest.findMaxSalaryOfStaff(1);
+
+        assertEquals(employee1, result);
+
+    }
+
+    @Test
+    void findMaxSalaryOfStaff_employeeNotFind_throwEmployeeNotFoundException() {
+        int department = 1;
+        when(employeeService.findAll()).thenReturn(Collections.emptyList());
+        EmployeeNotFoundException ex = assertThrows(EmployeeNotFoundException.class,
+                () -> underTest.findMaxSalaryOfStaff(department));
+        assertEquals("Staff not found !" + department, ex.getMessage());
+    }
+
+    @Test
+    void findMinSalaryOfStaff_employeeFind_returnEmployeeVsMinSalary() {
+        when(employeeService.findAll()).thenReturn(employees);
+
+        Employee result = underTest.findMinSalaryOfStaff(1);
+
+        assertEquals(employee2, result);
+
+
+    }
+    @Test
+    void findMinSalaryOfStaff_employeeNotFind_throwEmployeeNotFoundException(){
+        int department = 1;
+        when(employeeService.findAll()).thenReturn(Collections.emptyList());
+        EmployeeNotFoundException ex = assertThrows(EmployeeNotFoundException.class,
+                ()->underTest.findMinSalaryOfStaff(department));
+        assertEquals("Staff not found !" + department, ex.getMessage());
+    }
+    @Test
+    void findAllStaffInDepartment_addEmployee_resultFindAllStaffInDepartments(){
+
+    when(employeeService.findAll()).thenReturn(employees);
+    Employee result = underTest.findAllStaffInDepartment(1);
+
+    assertEquals(employee1,result);
+    assertEquals(employee2,result);
+
+
+    }
+    @Test
+    void findAllStaffInAllDepartment_addEmployee_resultFindAllStaffInAllDepartments() {
+
+        when(employeeService.findAll()).thenReturn(employees);
+        Employee result = underTest.findAllStaffInAllDepartments();
+
+        assertEquals(employees, result);
+    }
+
+
+
+
+}

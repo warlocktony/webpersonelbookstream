@@ -16,7 +16,7 @@ import java.util.Map;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final Map<String, Employee>employeeMap;
-    private static final int EMPLOYEE_MAX_SIZE = 10;
+    private static final int EMPLOYEE_MAX_SIZE = 2;
 
     public EmployeeServiceImpl(){
         this.employeeMap=new HashMap<>();
