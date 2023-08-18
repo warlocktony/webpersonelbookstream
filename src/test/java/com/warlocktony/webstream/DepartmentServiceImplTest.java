@@ -14,10 +14,7 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @ExtendWith(MockitoExtension.class)
  class DepartmentServiceImplTest {
@@ -35,6 +32,7 @@ import java.util.List;
     Employee employee3 = new Employee("IRA", "IRINOVNA",
             80_000, 2);
     Collection<Employee> employees;
+
 
     @BeforeEach
     void beforeEach() {
@@ -79,26 +77,49 @@ import java.util.List;
         assertEquals("Staff not found !" + department, ex.getMessage());
     }
     @Test
-    void findAllStaffInDepartment_addEmployee_resultFindAllStaffInDepartments(){
+    void findAllStaffInDepartment_addEmployees_resultFindAllStaffInDepartments(){
+        Collection<Employee> employeesDepartmentOne = List.of(
+                employee1, employee2
+        );
+        when(employeeService.findAll()).thenReturn(employeesDepartmentOne);
+        Collection<Employee> result = underTest.findAllStaffInDepartment(1);
 
-    when(employeeService.findAll()).thenReturn(employees);
-    Employee result = underTest.findAllStaffInDepartment(1);
-
-    assertEquals(employee1,result);
-    assertEquals(employee2,result);
+        assertEquals(employeesDepartmentOne, result);
 
 
     }
     @Test
-    void findAllStaffInAllDepartment_addEmployee_resultFindAllStaffInAllDepartments() {
+    void findAllStaffInDepartment_noStaffInDepartment_resultFindAllStaffInDepartments() {
+        Collection<Employee> employeesDepartmentOne = List.of();
 
-        when(employeeService.findAll()).thenReturn(employees);
-        Employee result = underTest.findAllStaffInAllDepartments();
+        when(employeeService.findAll()).thenReturn(Collections.emptyList());
 
-        assertEquals(employees, result);
+        Collection<Employee> result = underTest.findAllStaffInDepartment(1);
+
+        assertEquals(employeesDepartmentOne, result);
+
+    }
+    @Test
+    void findAllStaffInAllDepartment_employeesAreInCollection_resultFindAllStaffInAllDepartments() {
+        Map<Integer, List<Employee>> employeeMap = new HashMap<>(Map.of(1,employee1,2,employee3));
+
+        Map<Integer, List<Employee>> result = underTest.findAllStaffInAllDepartments();
+
+        assertEquals(employeeMap, result);
+    }
+    @Test
+    void findAllStaffInAllDepartment_employeesAreNotInCollection_resultFindAllStaffInAllDepartments() {
+        Map<Integer, List<Employee>> employeeMap = new HashMap<>();
+
+        Map<Integer, List<Employee>> result = underTest.findAllStaffInAllDepartments();
+
+        assertEquals(employeeMap, result);
     }
 
 
-
-
 }
+
+
+
+
+
