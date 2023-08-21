@@ -9,12 +9,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 import java.util.*;
+
+
 
 @ExtendWith(MockitoExtension.class)
  class DepartmentServiceImplTest {
@@ -101,7 +105,9 @@ import java.util.*;
     }
     @Test
     void findAllStaffInAllDepartment_employeesAreInCollection_resultFindAllStaffInAllDepartments() {
-        Map<Integer, List<Employee>> employeeMap = new HashMap<>(Map.of(1,employee1,2,employee3));
+        Map<Integer, List<Employee>> employeeMap = Map.of(1,List.of(employee1,employee2),2,List.of(employee3));
+
+        when(employeeService.findAll()).thenReturn(employees);
 
         Map<Integer, List<Employee>> result = underTest.findAllStaffInAllDepartments();
 

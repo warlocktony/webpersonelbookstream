@@ -9,11 +9,11 @@ import com.warlocktony.webstream.service.EmployeeServiceImpl;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
-import java.util.Collections;
+
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+
 
 class EmployeeServiceImplTest {
 
@@ -105,14 +105,17 @@ class EmployeeServiceImplTest {
                  , employee1.getSalary(), employee1.getDepartment());
          underTest.addEmployee(employee2.getFirstName(), employee2.getLastName()
                  , employee2.getSalary(), employee2.getDepartment());
-         Collection<Employee> result = employees;
-         assertEquals(employees,result);
+
+         Collection<Employee> result = underTest.findAll();
+         assertFalse(result.contains(employees));
+
 
      }
      @Test
      void findAll_collectionIsEmpty_returnEmptyCollection(){
-         underTest.findAll();
-         assertFalse(underTest.findAll().contains(employeesEmpty));
+
+         Collection<Employee> result = underTest.findAll();
+         assertFalse(result.contains(employeesEmpty));
 
      }
 
