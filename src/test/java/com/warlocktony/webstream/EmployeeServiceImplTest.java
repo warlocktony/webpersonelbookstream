@@ -107,7 +107,7 @@ class EmployeeServiceImplTest {
                  , employee2.getSalary(), employee2.getDepartment());
 
          Collection<Employee> result = underTest.findAll();
-         assertFalse(result.contains(employees));
+         assertTrue(result.containsAll(employees));
 
 
      }
@@ -115,7 +115,7 @@ class EmployeeServiceImplTest {
      void findAll_collectionIsEmpty_returnEmptyCollection(){
 
          Collection<Employee> result = underTest.findAll();
-         assertFalse(result.contains(employeesEmpty));
+         assertFalse(result.containsAll(employees));
 
      }
 
